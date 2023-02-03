@@ -1,0 +1,38 @@
+.control {
+  margin: 1rem auto;
+  display: flex;
+  /* align-items: stretch; */
+  flex-direction: column;
+  max-width: 600px;
+}
+label {
+  font-weight: bold;
+  flex: 1;
+  color: whitesmoke;
+  margin-bottom: 1rem;
+}
+
+input {
+  flex: 3;
+  font: inherit;
+  padding: 0.35rem 0.35rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+input :focus {
+  outline: none;
+  border-color: #4f005f;
+  background: #f6dbfc;
+}
+.control label,
+.control input {
+  display: block;
+}
+.control.invalid input {
+  border-color: red;
+  background: #fbdada;
+}
+
+.control.invalid span {
+  color: #fba4a4;
+}
