@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 export const api = axios.create({
+  baseURL: "https://pre-onboarding-selection-task.shop",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -23,7 +24,7 @@ api.interceptors.response.use(
       if (error && error.message) {
         errorMessage = error.message;
       }
-      throw new Error(errorMessage);
+      alert(errorMessage);
     }
   }
 );

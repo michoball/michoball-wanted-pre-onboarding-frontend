@@ -1,13 +1,14 @@
-import AppButton from "@styles/button/AppButton";
-import FormInput from "@styles/FormInput";
-import React, {
+import {
   ChangeEvent,
   FormEvent,
+  useContext,
   useEffect,
   useReducer,
   useState,
 } from "react";
-
+import AppButton from "@styles/button/AppButton";
+import FormInput from "@styles/FormInput";
+import AuthContext from "context/authContext";
 import {
   ActionType,
   AuthForm,
@@ -15,6 +16,7 @@ import {
   passwordReducer,
   State,
 } from "./SignInForm";
+import { useNavigate } from "react-router-dom";
 
 const confirmPasswordReducer = (state: State, action: ActionType): State => {
   if (action.type === "USER_INPUT") {
@@ -25,8 +27,9 @@ const confirmPasswordReducer = (state: State, action: ActionType): State => {
 };
 
 const SignUpForm = () => {
+  const { onSignUp } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formIsValid, setFormIsValid] = useState(false);
-
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
     isValid: null,
@@ -63,8 +66,8 @@ const SignUpForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formIsValid) {
-      // sign up 제출 코드
-      console.log(email, password);
+      onSignUp(email, password);
+      navigate("/signin");
     }
     dispatchEmail({ type: "RESET" });
     dispatchPassword({ type: "RESET" });
@@ -91,6 +94,7 @@ const SignUpForm = () => {
         <FormInput
           label="Email"
           type="email"
+          data-testid="email-input"
           value={email}
           required
           isValid={emailIsValid}
@@ -99,6 +103,7 @@ const SignUpForm = () => {
         <FormInput
           label="Password"
           type="password"
+          data-testid="password-input"
           value={password}
           required
           isValid={passwordIsValid}
@@ -112,7 +117,11 @@ const SignUpForm = () => {
           isValid={confirmPasswordIsValid}
           onChange={confirmPasswordChangeHandler}
         />
-        <AppButton type="submit" isNotValid={!formIsValid}>
+        <AppButton
+          type="submit"
+          data-testid="signup-button"
+          isNotValid={!formIsValid}
+        >
           {formIsValid ? "Sign Up" : <span>&#10005;</span>}
         </AppButton>
       </AuthForm>

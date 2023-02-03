@@ -2,9 +2,6 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 const Home = () => {
-  // const navigate = useNavigate();
-  // const location = useLocation();
-
   return (
     <AppContainer>
       <header className="App-header">

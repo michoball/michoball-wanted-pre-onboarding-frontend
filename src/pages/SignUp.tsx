@@ -1,12 +1,21 @@
 import SignUpForm from "@components/SignUpForm";
-import React from "react";
+import AuthContext from "context/authContext";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (isLoggedIn) navigate("/");
+  }, [isLoggedIn]);
+
   return (
     <SignUpSection>
       <header>
-        <h2>Sign - In</h2>
+        <h2>Sign - Up</h2>
       </header>
       <SignUpForm />
     </SignUpSection>
