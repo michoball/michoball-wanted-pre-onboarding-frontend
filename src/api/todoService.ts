@@ -1,6 +1,6 @@
 import { api } from "@utils/api";
 
-export interface Todo {
+interface Todo {
   todo: string;
 }
 
@@ -14,10 +14,8 @@ const getAllTodo = async () => {
   return response.data;
 };
 
-const createTodo = async (todo: string) => {
-  const response = await api.post<ITodoData>("/todos", {
-    todo: todo,
-  });
+const createTodo = async (todo: Todo) => {
+  const response = await api.post<ITodoData>("/todos", todo);
   return response.data;
 };
 
