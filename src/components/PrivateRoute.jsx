@@ -8,13 +8,19 @@ const PrivateRoute = () => {
   const { setUserToken } = useContext(TodoContext);
 
   useEffect(() => {
-    const userToken = StorageControl.storageGetter("token");
-    const userEmail = StorageControl.storageGetter("email");
-    if (!userToken || !userEmail) {
-      setLoggedIn(false);
-    } else {
+    let isMounted = true;
+    if (isMounted) {
+      const userToken = StorageControl.storageGetter("token");
+      if (!userToken) {
+        setLoggedIn(false);
+        return;
+      }
       setUserToken(userToken);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [setUserToken]);
 
   return loggedIn ? <Outlet /> : <Navigate to="/signin" />;
