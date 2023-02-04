@@ -1,11 +1,19 @@
-import { useContext } from "react";
-import AuthContext from "context/authContext";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { StorageControl } from "@utils/localStorage";
 
 const PrivateRoute = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const [loggedIn, setLoggedIn] = useState(true);
 
-  return isLoggedIn ? <Outlet /> : <Navigate to="/signin" />;
+  useEffect(() => {
+    const userToken = StorageControl.storageGetter("token");
+    const userEmail = StorageControl.storageGetter("email");
+    if (!userToken || !userEmail) {
+      setLoggedIn(false);
+    }
+  }, []);
+
+  return loggedIn ? <Outlet /> : <Navigate to="/signin" />;
 };
 
 export default PrivateRoute;
