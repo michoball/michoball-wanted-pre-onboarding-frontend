@@ -1,26 +1,34 @@
 import Spinner from "@styles/spinner/Spinner";
+import TodoContext from "context/todoContext";
+import { useContext } from "react";
 import styled from "styled-components";
 import Card from "./TodoCard";
 
 const TodoList = () => {
+  const { todos, isLoading } = useContext(TodoContext);
   return (
     <TodoListContainer>
       <h3>TodoList</h3>
-      <div className="lists">
-        <ul>
-          <Card id="1" content="new todo sample" />
-        </ul>
-        {/* {todos.map((todo) => (
-          <Card
-            key={todo.id}
-            id={todo.id}
-            title={todo.title}
-            content={todo.content}
-            update={todo.updatedAt}
-            create={todo.createdAt}
-          />
-        ))} */}
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="lists">
+          <ul>
+            {todos ? (
+              todos.map((todo) => (
+                <Card
+                  key={todo.id}
+                  id={todo.id}
+                  content={todo.todo}
+                  isCompleted={todo.isCompleted}
+                />
+              ))
+            ) : (
+              <li> no result in here</li>
+            )}
+          </ul>
+        </div>
+      )}
     </TodoListContainer>
   );
 };
