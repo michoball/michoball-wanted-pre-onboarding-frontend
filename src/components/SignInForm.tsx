@@ -70,7 +70,7 @@ const SignInForm = () => {
     e.preventDefault();
     if (formIsValid) {
       onLogin(email, password);
-      navigate("/");
+      navigate("/todo");
     }
     dispatchEmail({ type: "RESET" });
     dispatchPassword({ type: "RESET" });

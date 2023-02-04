@@ -4,11 +4,9 @@ import TodoService from "@api/todoService";
 
 interface TodoContextType {
   todos: ITodoData[];
-  todoEdit: string;
   setUserToken: (token: string) => void;
   addTodo: (newTodo: string) => void;
   deleteTodo: (todoId: number) => void;
-  editTodo: (todoId: string) => void;
   updateTodo: (item: ITodoData) => void;
   isLoading: boolean;
 }
@@ -17,9 +15,7 @@ const TodoContext = createContext<TodoContextType>({
   todos: [],
   deleteTodo: (todoId: number) => {},
   addTodo: (newTodo: string) => {},
-  editTodo: (id: string) => {},
   updateTodo: (item: ITodoData) => {},
-  todoEdit: "",
   setUserToken: (token: string) => {},
   isLoading: true,
 });
@@ -28,7 +24,6 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
   const [todos, setTodos] = useState<ITodoData[]>([]);
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [todoEdit, setTodoEdit] = useState("");
 
   const fetchTodoListsHandler = useCallback(async () => {
     const data = await TodoService.getAllTodo();
@@ -57,19 +52,13 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const editTodoHandler = (id: string) => {
-    setTodoEdit(id);
-  };
-
   const value = {
     todos,
     isLoading,
     setUserToken,
     deleteTodo: deleteTodoHandler,
     addTodo: addTodoHandler,
-    editTodo: editTodoHandler,
     updateTodo: updateTodoHandler,
-    todoEdit,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

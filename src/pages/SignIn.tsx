@@ -9,7 +9,7 @@ const SignIn = () => {
   const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    if (isLoggedIn) navigate("/");
+    if (isLoggedIn) navigate("/todo");
   }, [isLoggedIn, navigate]);
 
   return (

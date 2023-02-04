@@ -2,14 +2,8 @@ import React, { useState, useEffect } from "react";
 import { StorageControl } from "@utils/localStorage";
 import AuthService from "@api/authService";
 
-interface User {
-  email: string;
-  token: string;
-}
-
 interface AuthContextType {
   isLoggedIn: boolean;
-  user: User | null;
   onLogout: () => void;
   onLogin: (email: string, password: string) => void;
   onSignUp: (email: string, password: string) => void;
@@ -17,7 +11,6 @@ interface AuthContextType {
 
 const AuthContext = React.createContext<AuthContextType>({
   isLoggedIn: false,
-  user: null,
   onLogout: () => {},
   onLogin: (email: string, password: string) => {},
   onSignUp: (email: string, password: string) => {},
@@ -28,14 +21,12 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const userToken = StorageControl.storageGetter("token");
     const userEmail = StorageControl.storageGetter("email");
     if (userToken && userEmail) {
-      setCurrentUser({ email: userEmail, token: userToken });
       setIsLoggedIn(true);
     }
   }, []);
@@ -43,7 +34,6 @@ export const AuthContextProvider = ({
   const loginHandler = async (email: string, password: string) => {
     try {
       const { data } = await AuthService.logInService(email, password);
-      setCurrentUser({ email, token: data.access_token });
       StorageControl.storageSetter(email, data.access_token);
       setIsLoggedIn(true);
     } catch (error) {
@@ -65,7 +55,6 @@ export const AuthContextProvider = ({
 
   const logoutHandler = () => {
     StorageControl.storageRemover();
-    setCurrentUser(null);
     setIsLoggedIn(false);
   };
 
@@ -73,7 +62,6 @@ export const AuthContextProvider = ({
     <AuthContext.Provider
       value={{
         isLoggedIn: isLoggedIn,
-        user: currentUser,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onSignUp: signUpHandler,
