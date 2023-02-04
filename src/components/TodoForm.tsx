@@ -1,14 +1,18 @@
 import AppButton, { BUTTON_TYPE_CLASSES } from "@styles/button/AppButton";
-import { useContext, useState, useEffect, FormEvent } from "react";
+import TodoContext from "context/todoContext";
+import { useContext, useState, useEffect, FormEvent, useRef } from "react";
 import styled from "styled-components";
 
 const TodoForm = () => {
-  const [content, setContent] = useState("");
+  const { addTodo } = useContext(TodoContext);
+  const todoContentRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setContent("");
-    // todo submit
+    if (!todoContentRef.current) return;
+    const newTodo = todoContentRef.current.value;
+    addTodo(newTodo);
+    todoContentRef.current.value = "";
   };
 
   return (
@@ -18,11 +22,15 @@ const TodoForm = () => {
         <input
           type="text"
           name="todo"
-          onChange={(e) => setContent(e.target.value)}
-          value={content}
+          data-testid="new-todo-input"
+          ref={todoContentRef}
           placeholder="Write a todo"
         />
-        <AppButton buttonType={BUTTON_TYPE_CLASSES.inverted} type="submit">
+        <AppButton
+          buttonType={BUTTON_TYPE_CLASSES.inverted}
+          type="submit"
+          data-testid="new-todo-add-button"
+        >
           추가
         </AppButton>
       </TodoInputForm>
