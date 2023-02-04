@@ -1,5 +1,24 @@
-import React from "react";
+import TodoForm from "@components/TodoForm";
+import TodoList from "@components/TodoList";
+import styled from "styled-components";
 
-export const Todo = () => {
-  return <div>Todo</div>;
+const Todo = () => {
+  return (
+    <TodoWrapper>
+      <TodoForm />
+      <TodoList />
+    </TodoWrapper>
+  );
 };
+
+const TodoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 30px;
+`;
+
+export default Todo;
