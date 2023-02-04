@@ -1,6 +1,6 @@
 import AppButton, { BUTTON_TYPE_CLASSES } from "@styles/button/AppButton";
 import TodoContext from "context/todoContext";
-import { useContext, useState, useEffect, FormEvent, useRef } from "react";
+import { useContext, FormEvent, useRef } from "react";
 import styled from "styled-components";
 
 const TodoForm = () => {
@@ -9,7 +9,11 @@ const TodoForm = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!todoContentRef.current) return;
+    if (!todoContentRef.current || !todoContentRef.current?.value) {
+      alert("Write new todo~!!");
+      return;
+    }
+
     const newTodo = todoContentRef.current.value;
     addTodo(newTodo);
     todoContentRef.current.value = "";
