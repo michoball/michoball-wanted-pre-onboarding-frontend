@@ -1,36 +1,48 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import { AiFillEdit, AiFillDelete, AiFillCheckCircle } from "react-icons/ai";
+import { GiCancel } from "react-icons/gi";
+import TodoContext from "context/todoContext";
 
 interface CardProps {
   content: string;
-  id: string;
+  id: number;
+  isCompleted: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ content, id }) => {
+const Card: React.FC<CardProps> = ({ content, id, isCompleted }) => {
+  const { deleteTodo, updateTodo } = useContext(TodoContext);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(content);
+  const [isChecked, setIsChecked] = useState(isCompleted);
 
   const editContentHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setEditContent(() => e.target.value);
   };
+
   const editTodoHandler = () => {
-    //edit
     setIsEditMode(!isEditMode);
-    setEditContent(content);
     if (isEditMode) {
-      if (window.confirm("Are you sure want to change it ?")) console.log();
-      setEditContent("");
-      return;
+      if (window.confirm("Are you sure want to change it ?")) {
+        updateTodo({ todo: editContent, id, isCompleted: isChecked });
+      }
     }
   };
 
   const deleteTodoHandler = () => {
+    if (isEditMode) {
+      setIsEditMode(!isEditMode);
+      return;
+    }
     if (window.confirm("Are you sure you want to delete?")) {
-      //delete
+      deleteTodo(id);
     }
   };
-  const changeCheckboxHandler = (e: ChangeEvent<HTMLInputElement>) => {};
+
+  const changeCheckboxHandler = () => {
+    setIsChecked(!isChecked);
+    updateTodo({ todo: content, id, isCompleted: !isChecked });
+  };
 
   return (
     <TodoCardContainer>
@@ -38,12 +50,14 @@ const Card: React.FC<CardProps> = ({ content, id }) => {
         className="checkbox"
         type="checkbox"
         onChange={changeCheckboxHandler}
+        checked={isChecked}
       />
       <TodoCardContent>
         {isEditMode ? (
           <input
             className="edit-mode"
             type="text"
+            data-testid="modify-input"
             value={editContent}
             onChange={editContentHandler}
           />
@@ -52,11 +66,17 @@ const Card: React.FC<CardProps> = ({ content, id }) => {
         )}
       </TodoCardContent>
       <TodoCardButtons>
-        <button onClick={editTodoHandler}>
+        <button
+          onClick={editTodoHandler}
+          data-testid={isEditMode ? "submit-button" : "modify-button"}
+        >
           {isEditMode ? <AiFillCheckCircle /> : <AiFillEdit />}
         </button>
-        <button onClick={deleteTodoHandler}>
-          <AiFillDelete />
+        <button
+          onClick={deleteTodoHandler}
+          data-testid={isEditMode ? "cancel-button" : "delete-button"}
+        >
+          {isEditMode ? <GiCancel /> : <AiFillDelete />}
         </button>
       </TodoCardButtons>
     </TodoCardContainer>
