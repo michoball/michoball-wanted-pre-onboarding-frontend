@@ -1,4 +1,4 @@
-import { ITodoData, Todo } from "@api/todoService";
+import { ITodoData } from "@api/todoService";
 import { createContext, useState, useEffect, useCallback } from "react";
 import TodoService from "@api/todoService";
 
@@ -32,7 +32,7 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchTodoListsHandler = useCallback(async () => {
     const data = await TodoService.getAllTodo();
-    setTodos(data.sort((a, b) => b.id - a.id));
+    setTodos(data.sort((a, b) => a.id - b.id));
     setIsLoading(false);
   }, []);
 
@@ -46,8 +46,8 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const addTodoHandler = async (newTodo: string) => {
-    const data = await TodoService.createTodo(newTodo);
-    setTodos([data, ...todos].sort((a, b) => b.id - a.id));
+    const data = await TodoService.createTodo({ todo: newTodo });
+    setTodos([data, ...todos].sort((a, b) => a.id - b.id));
   };
 
   const updateTodoHandler = async (upTodo: ITodoData) => {
