@@ -10,7 +10,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (isLoggedIn) navigate("/");
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   return (
     <SignInSection>
