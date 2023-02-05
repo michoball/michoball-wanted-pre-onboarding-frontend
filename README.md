@@ -35,7 +35,7 @@ npm start
 
 
 1. 가독성
-   - 코드의 가독성이 좋을 수 있도록 DRY(Don't Repeat Yourselft)에 신경쓰고 관심사를 계속 분리하려 했습니다.  
+   - 코드의 가독성이 좋을 수 있도록 DRY(Don't Repeat Yourself)에 신경쓰고 관심사를 계속 분리하려 했습니다.  
 
 2. 작업 방식
    - git flow 와 비슷하게 feature 브랜치로 분기후 feature에서 기능별로 브랜치를 분기하였습니다.
@@ -72,8 +72,6 @@ npm start
 ## 구현 고려사항
 
 
-### Api
-
 * Axios interceptor를 이용한 api request response 셋팅
 
   - utils 폴더에 api.config.ts 파일을 생성하여 axios의 기본 셋팅을 구현하여 반복되는 코드를 줄였습니다.
@@ -89,6 +87,7 @@ npm start
 
 - sign in과 sign up 에 reducer로 구현한 login validator 기능을 커스텀 훅으로 빼서 다루는 것이 가독성에 더 좋아보여 개선이 필요해보입니다 .
 
+- 로그인후 sign in 과 sign up route 에 접근 시 잠깐 접속되었다가 리다이렉트되는 현재 구현 상태가 UX에 좋지 않아 개선이 필요해보입니다.
 
 ## 폴더 구조
 
@@ -130,8 +129,6 @@ npm start
  ┣ 📜index.tsx
  ┗ 📜react-app-env.d.ts
 ```
-
-
 
 ## 인적사항
 
