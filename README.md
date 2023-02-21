@@ -152,22 +152,27 @@ const SignIn = () => {
     if (isLoggedIn) navigate("/todo");
   }, [isLoggedIn, navigate]);
 
-  return <SignInSection></SignInSection>;
+  return (
+    <SignInSection>
+      <header>
+        <h2>Sign - In</h2>
+      </header>
+      <SignInForm />
+    </SignInSection>
+  );
 };
 export default SignIn;
 ```
 
-
 ## 개선 사항
 
-- sign in과 sign up 에 reducer로 구현한 login validator 기능을 커스텀 훅으로 빼서 다루는 것이 가독성에 더 좋아보여 개선이 필요해보입니다 .
+- SignIn과 SignUp에 reducer로 구현한 login validator기능을 커스텀 훅으로 빼서 다루는 것이 가독성에 더 좋아보입니다 .
 
-- 로그인후 sign in 과 sign up route 에 접근 시 잠깐 접속되었다가 리다이렉트되는 현재 구현 상태가 UX에 좋지 않아 개선이 필요해보입니다.
+- 로그인후 SignIn 과 SignUp route에 접근 시 잠깐 접속되었다가 Redirect되는 현재 구현 상태가 UX에 좋지 않아 개선이 필요해보입니다.
 
 - 세부 라우트로 직접 접근시 페이지 에러(404에러)가 나오는 오류가 있습니다.
 
-
-
+- error 핸들링을 하는 부분을 개선하면 좋을 것 같습니다.
 
 </br>
 </br>
@@ -206,4 +211,3 @@ export default SignIn;
 
   - /todo 로의 접근은 Private Route를 생성하여 접근을 막았습니다.
   - /signin 과 /signup 은 라우트로 들어왔을 때 token의 여부를 체크하여 "/" 로 리다이렉트 하도록 했습니다.
-
