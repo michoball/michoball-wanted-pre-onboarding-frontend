@@ -66,11 +66,14 @@ const SignInForm = () => {
     };
   }, [emailIsValid, passwordIsValid]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formIsValid) {
-      onLogin(email, password);
-      navigate("/todo");
+      const res = await onLogin(email, password);
+      if (res === "success") {
+        console.log(res);
+        navigate("/todo");
+      }
     }
     dispatchEmail({ type: "RESET" });
     dispatchPassword({ type: "RESET" });
