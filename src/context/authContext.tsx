@@ -5,14 +5,14 @@ import AuthService from "@api/authService";
 interface AuthContextType {
   isLoggedIn: boolean;
   onLogout: () => void;
-  onLogin: (email: string, password: string) => void;
+  onLogin: (email: string, password: string) => Promise<string>;
   onSignUp: (email: string, password: string) => void;
 }
 
 const AuthContext = React.createContext<AuthContextType>({
   isLoggedIn: false,
   onLogout: () => {},
-  onLogin: (email: string, password: string) => {},
+  onLogin: async (email: string, password: string) => "",
   onSignUp: (email: string, password: string) => {},
 });
 
@@ -36,9 +36,11 @@ export const AuthContextProvider = ({
       const { data } = await AuthService.logInService(email, password);
       StorageControl.storageSetter(email, data.access_token);
       setIsLoggedIn(true);
+      return "success";
     } catch (error) {
       console.log(error);
       alert(error);
+      return "failed";
     }
   };
 
