@@ -211,3 +211,29 @@ export default SignIn;
 
   - /todo 로의 접근은 Private Route를 생성하여 접근을 막았습니다.
   - /signin 과 /signup 은 라우트로 들어왔을 때 token의 여부를 체크하여 "/" 로 리다이렉트 하도록 했습니다.
+
+# wanted-pre-onboarding-frontend 과제 제출
+
+<p>
+<img alt="Typescript" src="https://img.shields.io/badge/Typescript-v4.9.4-3178C6?style=plastic&logoColor=white%22/%3E"/>
+<img alt="React" src="https://img.shields.io/badge/React-v18.2.0-61DAFB?style=plastic&logo=react&logoColor=white"/>
+<img alt="React Router" src="https://img.shields.io/badge/React Router-v6.8.0-CA4245?style=plastic&logo=reactrouter&logoColor=white"/>
+</p>
+
+## 실행 방법
+
+```sh
+git clone // this repository
+cd this file location
+npm install
+npm start
+# front : http://localhost:3000
+```
+
+배포 사이트 (https://만들예정)
+
+## 👨‍💻 팀원
+
+| [강명훈](https://github.com/michoball) | [김진영](https://github.com/tbs01215)  |  [백유리](https://github.com/BaekYuri)  | [김유신](https://github.com/kysclient) |
+| :------------------------------------: | :------------------------------------: | :-------------------------------------: | :------------------------------------: |
+| [최명식](https://github.com/mysungsik) | [안윤경](https://github.com/skyhanull) | [구본아](https://github.com/bona373737) | [김재욱](https://github.com/WooGie911) |
