@@ -1,7 +1,7 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const Navigation = () => {
+const Navigation = ({ children }: { children: React.ReactNode }) => {
   const { pathname } = useLocation();
 
   return (
@@ -19,7 +19,7 @@ const Navigation = () => {
           )}
         </NavigationLink>
       </NavigationContainer>
-      <Outlet />
+      {children}
     </>
   );
 };
