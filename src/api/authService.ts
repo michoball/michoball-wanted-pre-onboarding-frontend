@@ -6,7 +6,7 @@ interface IUser {
 
 const logInService = async (email: string, password: string) => {
   const res = await api.post<IUser>(
-    "/auth/signin",
+    "auth/signin",
     JSON.stringify({ email, password })
   );
   return res;
@@ -14,7 +14,7 @@ const logInService = async (email: string, password: string) => {
 
 const signUpService = async (email: string, password: string) => {
   const res = await api.post<IUser>(
-    "/auth/signup",
+    "auth/signup",
     JSON.stringify({ email, password })
   );
   return res;

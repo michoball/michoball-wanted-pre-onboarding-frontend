@@ -10,18 +10,18 @@ export interface ITodoData extends Todo {
 }
 
 const getAllTodo = async () => {
-  const response = await api.get<ITodoData[]>("/todos");
+  const response = await api.get<ITodoData[]>("todos");
   return response.data;
 };
 
 const createTodo = async (todo: Todo) => {
-  const response = await api.post<ITodoData>("/todos", todo);
+  const response = await api.post<ITodoData>("todos", todo);
   return response.data;
 };
 
 const updateTodo = async (todoData: ITodoData) => {
   const { todo, id, isCompleted } = todoData;
-  const response = await api.put<{ data: ITodoData }>(`/todos/${id}`, {
+  const response = await api.put<{ data: ITodoData }>(`todos/${id}`, {
     todo,
     isCompleted,
   });
@@ -29,7 +29,7 @@ const updateTodo = async (todoData: ITodoData) => {
 };
 
 const deleteTodo = async (id: number) => {
-  const response = await api.delete(`/todos/${id}`);
+  const response = await api.delete(`todos/${id}`);
   return response.data;
 };
 
