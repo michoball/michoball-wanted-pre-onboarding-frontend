@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 export const api = axios.create({
-  baseURL: "https://pre-onboarding-selection-task.shop",
+  baseURL: " https://www.pre-onboarding-selection-task.shop/",
   headers: { "Content-Type": "application/json" },
 });
 
