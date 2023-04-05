@@ -1,25 +1,11 @@
-import { Route, Routes } from "react-router-dom";
-import Home from "@pages/Home";
-import SignIn from "@pages/SignIn";
-import SignUp from "@pages/SignUp";
-import Todo from "@pages/Todo";
-import Navigation from "@pages/Navigation";
-import PrivateRoute from "@components/PrivateRoute";
+import { RouterProvider } from "react-router-dom";
 import styled from "styled-components";
+import { routers } from "router";
 
 function App() {
   return (
     <AppContainer>
-      <Routes>
-        <Route path="/" element={<Navigation />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/todo" element={<PrivateRoute />}>
-            <Route path="/todo" element={<Todo />} />
-          </Route>
-        </Route>
-      </Routes>
+      <RouterProvider router={routers} />
     </AppContainer>
   );
 }
