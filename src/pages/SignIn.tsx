@@ -1,12 +1,12 @@
 import SignInForm from "@components/SignInForm";
-import AuthContext from "context/authContext";
-import React, { useContext, useEffect } from "react";
+import { useAuth } from "context/authContext";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     if (isLoggedIn) navigate("/todo");

@@ -1,14 +1,7 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useEffect, useReducer, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
-import AuthContext from "context/authContext";
+import { useAuth } from "context/authContext";
 import {
   ActionType,
   AuthForm,
@@ -27,7 +20,7 @@ const confirmPasswordReducer = (state: State, action: ActionType): State => {
 };
 
 const SignUpForm = () => {
-  const { onSignUp } = useContext(AuthContext);
+  const { onSignUp } = useAuth();
   const navigate = useNavigate();
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {

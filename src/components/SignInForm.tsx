@@ -1,15 +1,8 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useEffect, useReducer, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import styled from "styled-components";
-import AuthContext from "context/authContext";
+import { useAuth } from "context/authContext";
 import { useNavigate } from "react-router-dom";
 
 export interface State {
@@ -42,7 +35,7 @@ export const passwordReducer = (state: State, action: ActionType): State => {
 };
 
 const SignInForm = () => {
-  const { onLogin } = useContext(AuthContext);
+  const { onLogin } = useAuth();
   const navigate = useNavigate();
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
