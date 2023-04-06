@@ -4,9 +4,9 @@ import SignUp from "@pages/SignUp";
 import Todo from "@pages/Todo";
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Router as RemixRouter } from "@remix-run/router/dist/router";
-import GeneralLayout from "layout/GeneralLayout";
+import AuthGuardLayout from "layout/AuthGuardLayout";
 import Navigation from "@pages/Navigation";
+
 interface RouterBase {
   id: number;
   path: string;
@@ -46,12 +46,12 @@ const routerData: RouterBase[] = [
   },
 ];
 
-export const routers: RemixRouter = createBrowserRouter(
+export const routers = createBrowserRouter(
   routerData.map((router) => {
     if (router.withAuth) {
       return {
         path: router.path,
-        element: <GeneralLayout>{router.element}</GeneralLayout>,
+        element: <AuthGuardLayout>{router.element}</AuthGuardLayout>,
       };
     } else {
       return {
