@@ -1,5 +1,11 @@
 import { ITodoData } from "@api/todoService";
-import { createContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import TodoService from "@api/todoService";
 
 interface TodoContextType {
@@ -65,3 +71,5 @@ export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default TodoContext;
+
+export const useTodo = () => useContext(TodoContext);
