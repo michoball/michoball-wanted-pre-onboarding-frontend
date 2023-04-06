@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StorageControl } from "@utils/localStorage";
 import AuthService from "@api/authService";
 
@@ -75,3 +75,5 @@ export const AuthContextProvider = ({
 };
 
 export default AuthContext;
+
+export const useAuth = () => useContext(AuthContext);
