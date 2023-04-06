@@ -5,7 +5,7 @@ import Todo from "@pages/Todo";
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import AuthGuardLayout from "layout/AuthGuardLayout";
-import Navigation from "@pages/Navigation";
+import PrivateRoute from "@components/PrivateRoute";
 
 interface RouterBase {
   id: number;
@@ -56,7 +56,7 @@ export const routers = createBrowserRouter(
     } else {
       return {
         path: router.path,
-        element: <Navigation>{router.element}</Navigation>,
+        element: <PrivateRoute>{router.element}</PrivateRoute>,
       };
     }
   })
