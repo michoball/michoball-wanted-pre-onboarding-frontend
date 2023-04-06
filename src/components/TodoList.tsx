@@ -1,11 +1,10 @@
 import Spinner from "@styles/spinner/Spinner";
-import TodoContext from "context/todoContext";
-import { useContext } from "react";
+import { useTodo } from "context/todoContext";
 import styled from "styled-components";
 import Card from "./TodoCard";
 
 const TodoList = () => {
-  const { todos, isLoading } = useContext(TodoContext);
+  const { todos, isLoading } = useTodo();
   return (
     <TodoListContainer>
       <h3>TodoList</h3>

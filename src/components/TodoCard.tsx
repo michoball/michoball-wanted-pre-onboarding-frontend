@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { AiFillEdit, AiFillDelete, AiFillCheckCircle } from "react-icons/ai";
 import { GiCancel } from "react-icons/gi";
-import TodoContext from "context/todoContext";
+import { useTodo } from "context/todoContext";
 
 interface CardProps {
   content: string;
@@ -11,7 +11,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ content, id, isCompleted }) => {
-  const { deleteTodo, updateTodo } = useContext(TodoContext);
+  const { deleteTodo, updateTodo } = useTodo();
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(content);
   const [isChecked, setIsChecked] = useState(isCompleted);

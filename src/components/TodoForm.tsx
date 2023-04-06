@@ -1,10 +1,10 @@
 import AppButton, { BUTTON_TYPE_CLASSES } from "@styles/button/AppButton";
-import TodoContext from "context/todoContext";
-import { useContext, FormEvent, useRef } from "react";
+import { useTodo } from "context/todoContext";
+import { FormEvent, useRef } from "react";
 import styled from "styled-components";
 
 const TodoForm = () => {
-  const { addTodo } = useContext(TodoContext);
+  const { addTodo } = useTodo();
   const todoContentRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
