@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useReducer, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
-import { useAuth } from "context/authContext";
 import {
   ActionType,
   AuthForm,
@@ -9,7 +8,7 @@ import {
   passwordReducer,
   State,
 } from "./SignInForm";
-import { useNavigate } from "react-router-dom";
+import useAuthMutation from "@hooks/mutations/useAuthMutation";
 
 const confirmPasswordReducer = (state: State, action: ActionType): State => {
   if (action.type === "USER_INPUT") {
@@ -20,8 +19,8 @@ const confirmPasswordReducer = (state: State, action: ActionType): State => {
 };
 
 const SignUpForm = () => {
-  const { onSignUp } = useAuth();
-  const navigate = useNavigate();
+  const { useSignUpMutate } = useAuthMutation();
+  const { mutate: onSignUp } = useSignUpMutate();
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
@@ -59,8 +58,7 @@ const SignUpForm = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formIsValid) {
-      onSignUp(email, password);
-      navigate("/signin");
+      onSignUp({ email, password });
     }
     dispatchEmail({ type: "RESET" });
     dispatchPassword({ type: "RESET" });

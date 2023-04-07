@@ -2,8 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useReducer, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import styled from "styled-components";
-import { useAuth } from "context/authContext";
-import { useNavigate } from "react-router-dom";
+import useAuthMutation from "@hooks/mutations/useAuthMutation";
 
 export interface State {
   value: string;
@@ -35,8 +34,7 @@ export const passwordReducer = (state: State, action: ActionType): State => {
 };
 
 const SignInForm = () => {
-  const { onLogin } = useAuth();
-  const navigate = useNavigate();
+  const { useLoginMutate } = useAuthMutation();
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
@@ -48,6 +46,8 @@ const SignInForm = () => {
   });
   const { value: email, isValid: emailIsValid } = emailState;
   const { value: password, isValid: passwordIsValid } = passwordState;
+
+  const { mutate: onLogin } = useLoginMutate(email);
 
   useEffect(() => {
     const identifier = setTimeout(() => {
@@ -62,11 +62,7 @@ const SignInForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formIsValid) {
-      const res = await onLogin(email, password);
-      if (res === "success") {
-        console.log(res);
-        navigate("/todo");
-      }
+      onLogin({ email, password });
     }
     dispatchEmail({ type: "RESET" });
     dispatchPassword({ type: "RESET" });
