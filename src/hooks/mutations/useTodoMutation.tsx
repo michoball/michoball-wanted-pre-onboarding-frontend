@@ -7,6 +7,8 @@ const useTodoMutation = () => {
     return useMutation({
       mutationFn: TodoService.createTodo,
       onSuccess: () => {
+        // invalidateQueries 를 하는 이유: mutation이 끝나고 다시 refetch를 해서 최신의 값을 쓰기위해
+        // 아래 옵션을 주지 않으면 화면에 보이는 todo list에 변화가 없다.
         queryClient.invalidateQueries({ queryKey: ["Todos"] });
       },
     });
