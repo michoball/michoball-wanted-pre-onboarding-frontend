@@ -4,6 +4,7 @@ import FormInput from "@styles/FormInput";
 import styled from "styled-components";
 import { useAuth } from "context/authContext";
 import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export interface State {
   value: string;
@@ -14,6 +15,8 @@ export interface ActionType {
   type: string;
   val?: string;
 }
+
+type Inputs = { email: string; password: string };
 
 export const emailReducer = (state: State, action: ActionType): State => {
   if (action.type === "USER_INPUT") {
@@ -36,6 +39,12 @@ export const passwordReducer = (state: State, action: ActionType): State => {
 
 const SignInForm = () => {
   const { onLogin } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm<Inputs>();
   const navigate = useNavigate();
   const [formIsValid, setFormIsValid] = useState(false);
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -59,17 +68,18 @@ const SignInForm = () => {
     };
   }, [emailIsValid, passwordIsValid]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+
+    const { email, password } = data;
     if (formIsValid) {
       const res = await onLogin(email, password);
       if (res === "success") {
-        console.log(res);
         navigate("/todo");
       }
     }
-    dispatchEmail({ type: "RESET" });
-    dispatchPassword({ type: "RESET" });
+    resetField("email");
+    resetField("password");
   };
 
   const emailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,24 +92,28 @@ const SignInForm = () => {
 
   return (
     <>
-      <AuthForm onSubmit={handleSubmit}>
+      <AuthForm onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           label="Email"
           type="email"
           data-testid="email-input"
-          value={email}
-          required
           isValid={emailIsValid}
-          onChange={emailChangeHandler}
+          {...register("email", {
+            required: true,
+            onChange: emailChangeHandler,
+            pattern: /^\S+@\S+$/i,
+          })}
         />
         <FormInput
           label="Password"
           type="password"
           data-testid="password-input"
-          value={password}
-          required
           isValid={passwordIsValid}
-          onChange={passwordChangeHandler}
+          {...register("password", {
+            required: true,
+            onChange: passwordChangeHandler,
+            minLength: 8,
+          })}
         />
         <AppButton
           type="submit"
