@@ -6,20 +6,20 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   isValid: boolean | null;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
-  label,
-  isValid,
-  ...otherProps
-}) => {
-  return (
-    <div
-      className={`${styles.control} ${isValid === false ? styles.invalid : ""}`}
-    >
-      {label && <label htmlFor={label}>{label}</label>}
-      <input {...otherProps} />
-      {isValid === false && <span>{label} is not valid</span>}
-    </div>
-  );
-};
+const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
+  ({ label, isValid, ...otherProps }, ref) => {
+    return (
+      <div
+        className={`${styles.control} ${
+          isValid === false ? styles.invalid : ""
+        }`}
+      >
+        {label && <label htmlFor={label}>{label}</label>}
+        <input {...otherProps} ref={ref} />
+        {isValid === false && <span>{label} is not valid</span>}
+      </div>
+    );
+  }
+);
 
 export default FormInput;
