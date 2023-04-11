@@ -1,10 +1,16 @@
-import { ChangeEvent, FormEvent, useEffect, useReducer, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import styled from "styled-components";
 import { useAuth } from "context/authContext";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  emailExpression,
+  emailRegex,
+  passwordExpression,
+  passwordRegex,
+} from "@utils/regex";
 
 export interface State {
   value: string;
@@ -16,26 +22,7 @@ export interface ActionType {
   val?: string;
 }
 
-type Inputs = { email: string; password: string };
-
-export const emailReducer = (state: State, action: ActionType): State => {
-  if (action.type === "USER_INPUT") {
-    if (action.val)
-      return {
-        value: action.val,
-        isValid: action.val.includes("@"),
-      };
-  }
-  return { value: "", isValid: null };
-};
-
-export const passwordReducer = (state: State, action: ActionType): State => {
-  if (action.type === "USER_INPUT") {
-    if (action.val)
-      return { value: action.val, isValid: action.val.trim().length >= 8 };
-  }
-  return { value: "", isValid: null };
-};
+export type LoginInputs = { email: string; password: string };
 
 const SignInForm = () => {
   const { onLogin } = useAuth();
@@ -43,51 +30,36 @@ const SignInForm = () => {
     register,
     handleSubmit,
     resetField,
-    formState: { errors },
-  } = useForm<Inputs>();
+    formState: { isValid },
+    watch,
+  } = useForm<LoginInputs>();
   const navigate = useNavigate();
-  const [formIsValid, setFormIsValid] = useState(false);
-  const [emailState, dispatchEmail] = useReducer(emailReducer, {
-    value: "",
-    isValid: null,
-  });
-  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: "",
-    isValid: null,
-  });
-  const { value: email, isValid: emailIsValid } = emailState;
-  const { value: password, isValid: passwordIsValid } = passwordState;
+  const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
+  const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    const identifier = setTimeout(() => {
-      setFormIsValid(!!emailIsValid && !!passwordIsValid);
-    }, 300);
-
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, [emailIsValid, passwordIsValid]);
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
+    // console.log(data, isValid);
 
     const { email, password } = data;
-    if (formIsValid) {
+    if (isValid) {
       const res = await onLogin(email, password);
       if (res === "success") {
         navigate("/todo");
       }
     }
+
     resetField("email");
     resetField("password");
   };
 
   const emailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatchEmail({ type: "USER_INPUT", val: event.target.value });
+    const emailInput = watch("email");
+    setEmailIsvalid(emailRegex(emailInput));
   };
 
   const passwordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatchPassword({ type: "USER_INPUT", val: event.target.value });
+    const passwordInput = watch("password");
+    setPasswordIsValid(passwordRegex(passwordInput));
   };
 
   return (
@@ -101,7 +73,10 @@ const SignInForm = () => {
           {...register("email", {
             required: true,
             onChange: emailChangeHandler,
-            pattern: /^\S+@\S+$/i,
+            pattern: {
+              value: emailExpression,
+              message: "이메일 형식에 맞지 않습니다.",
+            },
           })}
         />
         <FormInput
@@ -112,15 +87,18 @@ const SignInForm = () => {
           {...register("password", {
             required: true,
             onChange: passwordChangeHandler,
-            minLength: 8,
+            pattern: {
+              value: passwordExpression,
+              message: "8자리 이상 비밀번호를 사용하세요.",
+            },
           })}
         />
         <AppButton
           type="submit"
           data-testid="signin-button"
-          isNotValid={!formIsValid}
+          isNotValid={!isValid}
         >
-          {formIsValid ? "Sign In" : <span>&#10005;</span>}
+          {isValid ? "Sign In" : <span>&#10005;</span>}
         </AppButton>
       </AuthForm>
     </>
