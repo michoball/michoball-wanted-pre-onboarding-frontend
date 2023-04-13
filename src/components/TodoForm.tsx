@@ -1,10 +1,11 @@
+import useTodoMutation from "@hooks/mutations/useTodoMutation";
 import AppButton, { BUTTON_TYPE_CLASSES } from "@styles/button/AppButton";
-import { useTodo } from "context/todoContext";
 import { FormEvent, useRef } from "react";
 import styled from "styled-components";
 
 const TodoForm = () => {
-  const { addTodo } = useTodo();
+  const { useAddTodoMutate } = useTodoMutation();
+  const { mutate: addTodo } = useAddTodoMutate();
   const todoContentRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -15,7 +16,7 @@ const TodoForm = () => {
     }
 
     const newTodo = todoContentRef.current.value;
-    addTodo(newTodo);
+    addTodo({ todo: newTodo });
     todoContentRef.current.value = "";
   };
 

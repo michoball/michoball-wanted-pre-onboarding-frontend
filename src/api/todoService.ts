@@ -1,6 +1,6 @@
 import { api } from "@utils/api";
 
-interface Todo {
+export interface Todo {
   todo: string;
 }
 

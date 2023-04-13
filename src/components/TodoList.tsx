@@ -1,10 +1,12 @@
 import Spinner from "@styles/spinner/Spinner";
-import { useTodo } from "context/todoContext";
 import styled from "styled-components";
 import Card from "./TodoCard";
+import useGetTodoQuery from "@hooks/queryies/useGetTodoQuery";
 
 const TodoList = () => {
-  const { todos, isLoading } = useTodo();
+  const { useGetAllTodoQuery } = useGetTodoQuery();
+  const { data: todos, isLoading } = useGetAllTodoQuery();
+
   return (
     <TodoListContainer>
       <h3>TodoList</h3>
