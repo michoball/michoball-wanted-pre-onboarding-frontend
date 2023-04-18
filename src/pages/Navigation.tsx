@@ -1,8 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { useRouter } from "@hooks/useRouter";
+import React from "react";
+import { Link } from "react-router-dom";
+import { RouterBase } from "router";
 import styled from "styled-components";
 
-const Navigation = ({ children }: { children: React.ReactNode }) => {
-  const { pathname } = useLocation();
+interface NavigationProps {
+  children: React.ReactNode;
+  sidebarContent: RouterBase[];
+}
+
+const Navigation: React.FC<NavigationProps> = ({
+  children,
+  sidebarContent,
+}) => {
+  const { currentPath } = useRouter();
 
   return (
     <>
@@ -11,12 +22,22 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
           <h1>원티드 프리온보딩 프론트엔드 - 선발 과제</h1>
         </div>
         <NavigationLink>
-          <Link to="/">Home 으로</Link>
-          {pathname !== "/todo" && <Link to="/todo">Todo 바로가기</Link>}
-          {pathname !== "/signin" && <Link to="/signin">Login 바로가기</Link>}
-          {pathname !== "/signup" && (
-            <Link to="/signup">회원가입 바로가기</Link>
-          )}
+          {sidebarContent.map(({ label, path, id }) => {
+            if (path === "/") {
+              return (
+                <Link to={path} key={id}>
+                  {label} 으로
+                </Link>
+              );
+            }
+            return (
+              currentPath !== path && (
+                <Link to={path} key={id}>
+                  {label} 바로가기
+                </Link>
+              )
+            );
+          })}
         </NavigationLink>
       </NavigationContainer>
       {children}
