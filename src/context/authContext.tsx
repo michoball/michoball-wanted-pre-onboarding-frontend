@@ -34,7 +34,7 @@ export const AuthContextProvider = ({
   const loginHandler = async (email: string, password: string) => {
     try {
       const { data } = await AuthService.logInService(email, password);
-      StorageControl.storageSetter(email, data.access_token);
+      StorageControl.storageSetter(data.access_token);
       setIsLoggedIn(true);
       return "success";
     } catch (error) {
