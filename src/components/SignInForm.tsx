@@ -1,30 +1,16 @@
-import { ChangeEvent, useState } from "react";
+import { useMemo } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import styled from "styled-components";
 import useAuthMutation from "@hooks/mutations/useAuthMutation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  emailExpression,
-  emailRegex,
-  passwordExpression,
-  passwordRegex,
-} from "@utils/regex";
-
-export interface State {
-  value: string;
-  isValid: boolean | null;
-}
-
-export interface ActionType {
-  type: string;
-  val?: string;
-}
+import { emailRegex, passwordRegex } from "@utils/regex";
 
 export type LoginInputs = { email: string; password: string };
 
 const SignInForm = () => {
   const { useLoginMutate } = useAuthMutation();
+  const { mutate: onLogin } = useLoginMutate();
   const {
     register,
     handleSubmit,
@@ -33,9 +19,17 @@ const SignInForm = () => {
     watch,
   } = useForm<LoginInputs>();
 
-  const { mutate: onLogin } = useLoginMutate();
-  const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
-  const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
+  const emailInput = watch("email");
+  const passwordInput = watch("password");
+
+  const emailIsValid = useMemo(
+    () => (!emailInput ? null : emailRegex(emailInput)),
+    [emailInput]
+  );
+  const passwordIsValid = useMemo(
+    () => (!passwordInput ? null : passwordRegex(passwordInput)),
+    [passwordInput]
+  );
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     const { email, password } = data;
@@ -47,16 +41,6 @@ const SignInForm = () => {
     resetField("password");
   };
 
-  const emailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const emailInput = watch("email");
-    setEmailIsvalid(emailRegex(emailInput));
-  };
-
-  const passwordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const passwordInput = watch("password");
-    setPasswordIsValid(passwordRegex(passwordInput));
-  };
-
   return (
     <>
       <AuthForm onSubmit={handleSubmit(onSubmit)}>
@@ -65,13 +49,9 @@ const SignInForm = () => {
           type="email"
           data-testid="email-input"
           isValid={emailIsValid}
+          errorMessage="이메일 형식에 맞지 않습니다."
           {...register("email", {
             required: true,
-            onChange: emailChangeHandler,
-            pattern: {
-              value: emailExpression,
-              message: "이메일 형식에 맞지 않습니다.",
-            },
           })}
         />
         <FormInput
@@ -79,13 +59,9 @@ const SignInForm = () => {
           type="password"
           data-testid="password-input"
           isValid={passwordIsValid}
+          errorMessage="8자리 이상 비밀번호를 사용하세요."
           {...register("password", {
             required: true,
-            onChange: passwordChangeHandler,
-            pattern: {
-              value: passwordExpression,
-              message: "8자리 이상 비밀번호를 사용하세요.",
-            },
           })}
         />
         <AppButton

@@ -1,15 +1,10 @@
-import { ChangeEvent, useState } from "react";
+import { useMemo } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import { AuthForm, LoginInputs } from "./SignInForm";
 import useAuthMutation from "@hooks/mutations/useAuthMutation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  emailExpression,
-  emailRegex,
-  passwordExpression,
-  passwordRegex,
-} from "@utils/regex";
+import { emailRegex, passwordRegex } from "@utils/regex";
 
 type SignUpInputs = { passwordConfirm: string } & LoginInputs;
 
@@ -23,11 +18,22 @@ const SignUpForm = () => {
     formState: { isValid },
     watch,
   } = useForm<SignUpInputs>();
-  const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
-  const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
-  const [passwordConfirmIsValid, setPasswordConfirmIsValid] = useState<
-    boolean | null
-  >(null);
+  const emailInput = watch("email");
+  const passwordInput = watch("password");
+  const confirmPassword = watch("passwordConfirm");
+
+  const emailIsValid = useMemo(
+    () => (!emailInput ? null : emailRegex(emailInput)),
+    [emailInput]
+  );
+  const passwordIsValid = useMemo(
+    () => (!passwordInput ? null : passwordRegex(passwordInput)),
+    [passwordInput]
+  );
+  const passwordConfirmIsValid = useMemo(
+    () => (!confirmPassword ? null : passwordInput === confirmPassword),
+    [passwordInput, confirmPassword]
+  );
 
   const onSubmit: SubmitHandler<SignUpInputs> = (data) => {
     const { email, password } = data;
@@ -36,24 +42,7 @@ const SignUpForm = () => {
     }
     resetField("email");
     resetField("password");
-  };
-
-  const emailChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const emailInput = watch("email");
-    setEmailIsvalid(emailRegex(emailInput));
-  };
-
-  const passwordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const passwordInput = watch("password");
-    setPasswordIsValid(passwordRegex(passwordInput));
-  };
-
-  const confirmPasswordChangeHandler = (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const passwordInput = watch("password");
-    const confirmPassword = watch("passwordConfirm");
-    setPasswordConfirmIsValid(confirmPassword === passwordInput);
+    resetField("passwordConfirm");
   };
 
   return (
@@ -64,13 +53,9 @@ const SignUpForm = () => {
           type="email"
           data-testid="email-input"
           isValid={emailIsValid}
+          errorMessage="이메일 형식에 맞지 않습니다."
           {...register("email", {
             required: true,
-            onChange: emailChangeHandler,
-            pattern: {
-              value: emailExpression,
-              message: "이메일 형식에 맞지 않습니다.",
-            },
           })}
         />
         <FormInput
@@ -78,13 +63,9 @@ const SignUpForm = () => {
           type="password"
           data-testid="password-input"
           isValid={passwordIsValid}
+          errorMessage="8자리 이상 비밀번호를 사용하세요."
           {...register("password", {
             required: true,
-            onChange: passwordChangeHandler,
-            pattern: {
-              value: passwordExpression,
-              message: "8자리 이상 비밀번호를 사용하세요.",
-            },
           })}
         />
         <FormInput
@@ -92,10 +73,10 @@ const SignUpForm = () => {
           type="password"
           required
           isValid={passwordConfirmIsValid}
+          errorMessage="비밀번호와 일치하지 않습니다."
           {...register("passwordConfirm", {
             required: true,
-            onChange: confirmPasswordChangeHandler,
-            validate: (value) => watch("password") === value,
+            validate: (value) => passwordInput === value,
           })}
         />
         <AppButton
