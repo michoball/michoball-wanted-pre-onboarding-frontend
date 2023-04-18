@@ -4,10 +4,11 @@ import SignUp from "@pages/SignUp";
 import Todo from "@pages/Todo";
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import AuthGuardLayout from "layout/AuthGuardLayout";
-import PrivateRoute from "@components/PrivateRoute";
+import TodoGuardLayout from "layout/TodoGuardLayout";
+import LoginGuardLayout from "layout/LoginGuardLayout";
+import Navigation from "@pages/Navigation";
 
-interface RouterBase {
+export interface RouterBase {
   id: number;
   path: string;
   label: string;
@@ -51,13 +52,22 @@ export const routers = createBrowserRouter(
     if (router.withAuth) {
       return {
         path: router.path,
-        element: <AuthGuardLayout>{router.element}</AuthGuardLayout>,
-      };
-    } else {
-      return {
-        path: router.path,
-        element: <PrivateRoute>{router.element}</PrivateRoute>,
+        element: (
+          <TodoGuardLayout>
+            <Navigation sidebarContent={routerData}>
+              {router.element}
+            </Navigation>
+          </TodoGuardLayout>
+        ),
       };
     }
+    return {
+      path: router.path,
+      element: (
+        <LoginGuardLayout>
+          <Navigation sidebarContent={routerData}>{router.element}</Navigation>
+        </LoginGuardLayout>
+      ),
+    };
   })
 );
