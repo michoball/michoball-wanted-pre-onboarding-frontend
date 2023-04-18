@@ -1,5 +1,5 @@
 import { FC, ButtonHTMLAttributes } from "react";
-import { BaseButton, InvertedButton, ButtonSpinner } from "./AppButton.styles";
+import { BaseButton, InvertedButton } from "./AppButton.styles";
 
 export enum BUTTON_TYPE_CLASSES {
   base = "base",
@@ -14,21 +14,19 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton =>
 
 export type ButtonProps = {
   buttonType?: BUTTON_TYPE_CLASSES;
-  isLoading?: boolean;
   isNotValid?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const AppButton: FC<ButtonProps> = ({
   children,
   buttonType,
-  isLoading,
   isNotValid,
   ...otherProps
 }) => {
   const CustomButton = getButton(buttonType);
   return (
-    <CustomButton disabled={isLoading ?? isNotValid} {...otherProps}>
-      {isLoading ? <ButtonSpinner /> : children}
+    <CustomButton disabled={isNotValid} {...otherProps}>
+      {children}
     </CustomButton>
   );
 };
