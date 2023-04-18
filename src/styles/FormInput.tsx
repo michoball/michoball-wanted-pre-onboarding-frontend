@@ -4,10 +4,11 @@ import styles from "./FormInput.module.css";
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   isValid: boolean | null;
+  errorMessage: string;
 }
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
-  ({ label, isValid, ...otherProps }, ref) => {
+  ({ label, isValid, errorMessage, ...otherProps }, ref) => {
     return (
       <div
         className={`${styles.control} ${
@@ -16,7 +17,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       >
         {label && <label htmlFor={label}>{label}</label>}
         <input {...otherProps} ref={ref} />
-        {isValid === false && <span>{label} is not valid</span>}
+        {isValid === false && <span>{errorMessage}</span>}
       </div>
     );
   }
