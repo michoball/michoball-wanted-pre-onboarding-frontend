@@ -60,7 +60,6 @@ const Card: React.FC<CardProps> = ({ content, id, isCompleted }) => {
           <input
             className="edit-mode"
             type="text"
-            data-testid="modify-input"
             value={editContent}
             onChange={editContentHandler}
           />
@@ -69,16 +68,10 @@ const Card: React.FC<CardProps> = ({ content, id, isCompleted }) => {
         )}
       </TodoCardContent>
       <TodoCardButtons>
-        <button
-          onClick={editTodoHandler}
-          data-testid={isEditMode ? "submit-button" : "modify-button"}
-        >
+        <button onClick={editTodoHandler}>
           {isEditMode ? <AiFillCheckCircle /> : <AiFillEdit />}
         </button>
-        <button
-          onClick={deleteTodoHandler}
-          data-testid={isEditMode ? "cancel-button" : "delete-button"}
-        >
+        <button onClick={deleteTodoHandler}>
           {isEditMode ? <GiCancel /> : <AiFillDelete />}
         </button>
       </TodoCardButtons>

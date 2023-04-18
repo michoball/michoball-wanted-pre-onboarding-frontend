@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import AppButton from "@styles/button/AppButton";
-import FormInput from "@styles/FormInput";
+import FormInput from "@styles/input/FormInput";
 import styled from "styled-components";
 import useAuthMutation from "@hooks/mutations/useAuthMutation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -47,7 +47,6 @@ const SignInForm = () => {
         <FormInput
           label="Email"
           type="email"
-          data-testid="email-input"
           isValid={emailIsValid}
           errorMessage="이메일 형식에 맞지 않습니다."
           {...register("email", {
@@ -57,18 +56,13 @@ const SignInForm = () => {
         <FormInput
           label="Password"
           type="password"
-          data-testid="password-input"
           isValid={passwordIsValid}
           errorMessage="8자리 이상 비밀번호를 사용하세요."
           {...register("password", {
             required: true,
           })}
         />
-        <AppButton
-          type="submit"
-          data-testid="signin-button"
-          isNotValid={!isValid}
-        >
+        <AppButton type="submit" isNotValid={!isValid}>
           {isValid ? "Sign In" : <span>&#10005;</span>}
         </AppButton>
       </AuthForm>
