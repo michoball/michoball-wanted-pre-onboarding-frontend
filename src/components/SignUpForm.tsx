@@ -15,6 +15,7 @@ type SignUpInputs = { passwordConfirm: string } & LoginInputs;
 
 const SignUpForm = () => {
   const { useSignUpMutate } = useAuthMutation();
+  const { mutate: onSignUp } = useSignUpMutate();
   const {
     register,
     handleSubmit,
@@ -22,7 +23,6 @@ const SignUpForm = () => {
     formState: { isValid },
     watch,
   } = useForm<SignUpInputs>();
-  const { mutate: onSignUp } = useSignUpMutate();
   const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
   const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
   const [passwordConfirmIsValid, setPasswordConfirmIsValid] = useState<
@@ -32,8 +32,7 @@ const SignUpForm = () => {
   const onSubmit: SubmitHandler<SignUpInputs> = (data) => {
     const { email, password } = data;
     if (isValid) {
-      onSignUp(email, password);
-      navigate("/signin");
+      onSignUp({ email, password });
     }
     resetField("email");
     resetField("password");

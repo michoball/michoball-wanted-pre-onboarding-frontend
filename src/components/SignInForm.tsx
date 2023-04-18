@@ -24,7 +24,7 @@ export interface ActionType {
 export type LoginInputs = { email: string; password: string };
 
 const SignInForm = () => {
-  const { onLogin } = useAuth();
+  const { useLoginMutate } = useAuthMutation();
   const {
     register,
     handleSubmit,
@@ -32,19 +32,15 @@ const SignInForm = () => {
     formState: { isValid },
     watch,
   } = useForm<LoginInputs>();
-  const navigate = useNavigate();
+
+  const { mutate: onLogin } = useLoginMutate();
   const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
   const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    // console.log(data, isValid);
-
     const { email, password } = data;
     if (isValid) {
-      const res = await onLogin(email, password);
-      if (res === "success") {
-        navigate("/todo");
-      }
+      onLogin({ email, password });
     }
 
     resetField("email");
