@@ -6,7 +6,7 @@ import { StorageControl } from "@utils/localStorage";
 const useAuthMutation = () => {
   const navigate = useNavigate();
 
-  const useLoginMutate = (email: string) => {
+  const useLoginMutate = () => {
     return useMutation({
       mutationKey: ["signin"],
       mutationFn: ({
@@ -20,7 +20,7 @@ const useAuthMutation = () => {
       },
       onSuccess: (user) => {
         const { access_token: token } = user.data;
-        StorageControl.storageSetter(email, token);
+        StorageControl.storageSetter(token);
         navigate("/todo");
       },
     });
