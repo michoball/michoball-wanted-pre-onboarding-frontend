@@ -1,15 +1,14 @@
-import Navigation from "@pages/Navigation";
 import Spinner from "@styles/spinner/Spinner";
 import { StorageControl } from "@utils/localStorage";
 import { useRouter } from "hooks/useRouter";
 import React, { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-interface AuthGuardLayoutProps {
+interface TodoGuardLayoutProps {
   children: React.ReactNode;
 }
 
-const AuthGuardLayout: React.FC<AuthGuardLayoutProps> = ({ children }) => {
+const TodoGuardLayout: React.FC<TodoGuardLayoutProps> = ({ children }) => {
   const [userProfile, setUserProfile] = useState<string | null>(null);
   const { routeTo } = useRouter();
 
@@ -30,11 +29,7 @@ const AuthGuardLayout: React.FC<AuthGuardLayoutProps> = ({ children }) => {
 
   if (userProfile === null) return <Spinner />;
 
-  return userProfile ? (
-    <Navigation>{children}</Navigation>
-  ) : (
-    <Navigate to="/signin" />
-  );
+  return userProfile ? <>{children}</> : <Navigate to="/signin" />;
 };
 
-export default AuthGuardLayout;
+export default TodoGuardLayout;
