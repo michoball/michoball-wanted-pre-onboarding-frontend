@@ -1,9 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
-import { useAuth } from "context/authContext";
 import { AuthForm, LoginInputs } from "./SignInForm";
-import { useNavigate } from "react-router-dom";
+import useAuthMutation from "@hooks/mutations/useAuthMutation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   emailExpression,
@@ -15,7 +14,7 @@ import {
 type SignUpInputs = { passwordConfirm: string } & LoginInputs;
 
 const SignUpForm = () => {
-  const { onSignUp } = useAuth();
+  const { useSignUpMutate } = useAuthMutation();
   const {
     register,
     handleSubmit,
@@ -23,7 +22,7 @@ const SignUpForm = () => {
     formState: { isValid },
     watch,
   } = useForm<SignUpInputs>();
-  const navigate = useNavigate();
+  const { mutate: onSignUp } = useSignUpMutate();
   const [emailIsValid, setEmailIsvalid] = useState<boolean | null>(null);
   const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
   const [passwordConfirmIsValid, setPasswordConfirmIsValid] = useState<

@@ -2,7 +2,8 @@ import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { AiFillEdit, AiFillDelete, AiFillCheckCircle } from "react-icons/ai";
 import { GiCancel } from "react-icons/gi";
-import { useTodo } from "context/todoContext";
+
+import useTodoMutation from "@hooks/mutations/useTodoMutation";
 
 interface CardProps {
   content: string;
@@ -11,7 +12,9 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ content, id, isCompleted }) => {
-  const { deleteTodo, updateTodo } = useTodo();
+  const { useUpdateTodoMutate, useDeleteTodoMutate } = useTodoMutation();
+  const { mutate: updateTodo } = useUpdateTodoMutate();
+  const { mutate: deleteTodo } = useDeleteTodoMutate();
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(content);
   const [isChecked, setIsChecked] = useState(isCompleted);

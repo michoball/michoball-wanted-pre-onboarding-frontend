@@ -2,8 +2,7 @@ import { ChangeEvent, useState } from "react";
 import AppButton from "@styles/button/AppButton";
 import FormInput from "@styles/FormInput";
 import styled from "styled-components";
-import { useAuth } from "context/authContext";
-import { useNavigate } from "react-router-dom";
+import useAuthMutation from "@hooks/mutations/useAuthMutation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   emailExpression,
