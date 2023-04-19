@@ -1,18 +1,14 @@
 import { useRouter } from "@hooks/useRouter";
 import React from "react";
 import { Link } from "react-router-dom";
-import { RouterBase } from "router";
 import styled from "styled-components";
+import { routerData } from "router";
 
 interface NavigationProps {
   children: React.ReactNode;
-  sidebarContent: RouterBase[];
 }
 
-const Navigation: React.FC<NavigationProps> = ({
-  children,
-  sidebarContent,
-}) => {
+const Navigation: React.FC<NavigationProps> = ({ children }) => {
   const { currentPath } = useRouter();
 
   return (
@@ -22,7 +18,7 @@ const Navigation: React.FC<NavigationProps> = ({
           <h1>원티드 프리온보딩 프론트엔드 - 선발 과제</h1>
         </div>
         <NavigationLink>
-          {sidebarContent.map(({ label, path, id }) => {
+          {routerData.map(({ label, path, id }) => {
             if (path === "/") {
               return (
                 <Link to={path} key={id}>
