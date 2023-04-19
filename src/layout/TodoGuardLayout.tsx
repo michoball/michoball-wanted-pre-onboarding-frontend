@@ -5,11 +5,11 @@ import { useRouter } from "hooks/useRouter";
 import React, { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-interface AuthGuardLayoutProps {
+interface TodoGuardLayoutProps {
   children: React.ReactNode;
 }
 
-const AuthGuardLayout: React.FC<AuthGuardLayoutProps> = ({ children }) => {
+const TodoGuardLayout: React.FC<TodoGuardLayoutProps> = ({ children }) => {
   const [userProfile, setUserProfile] = useState<string | null>(null);
   const { routeTo } = useRouter();
 
@@ -37,4 +37,4 @@ const AuthGuardLayout: React.FC<AuthGuardLayoutProps> = ({ children }) => {
   );
 };
 
-export default AuthGuardLayout;
+export default TodoGuardLayout;

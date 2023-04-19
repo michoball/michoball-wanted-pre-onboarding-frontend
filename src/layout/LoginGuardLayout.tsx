@@ -1,14 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import Navigation from "@pages/Navigation";
 import { useRouter } from "hooks/useRouter";
 import { StorageControl } from "@utils/localStorage";
+import Navigation from "@pages/Navigation";
 
-interface PrivateRouteProps {
+interface LoginGuardLayoutProps {
   children: React.ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+const LoginGuardLayout: React.FC<LoginGuardLayoutProps> = ({ children }) => {
   const userToken = StorageControl.storageGetter("token");
   const { currentPath } = useRouter();
 
@@ -23,4 +23,4 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   );
 };
 
-export default PrivateRoute;
+export default LoginGuardLayout;

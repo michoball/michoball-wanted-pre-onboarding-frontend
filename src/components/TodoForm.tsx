@@ -27,15 +27,10 @@ const TodoForm = () => {
         <input
           type="text"
           name="todo"
-          data-testid="new-todo-input"
           ref={todoContentRef}
           placeholder="Write a todo"
         />
-        <AppButton
-          buttonType={BUTTON_TYPE_CLASSES.inverted}
-          type="submit"
-          data-testid="new-todo-add-button"
-        >
+        <AppButton buttonType={BUTTON_TYPE_CLASSES.inverted} type="submit">
           추가
         </AppButton>
       </TodoInputForm>
