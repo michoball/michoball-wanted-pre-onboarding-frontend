@@ -15,8 +15,8 @@ const SignInForm = () => {
     register,
     handleSubmit,
     resetField,
-    formState: { isValid },
     watch,
+    formState: { isValid },
   } = useForm<LoginInputs>();
 
   const emailInput = watch("email");
@@ -51,6 +51,7 @@ const SignInForm = () => {
           errorMessage="이메일 형식에 맞지 않습니다."
           {...register("email", {
             required: true,
+            validate: (value) => emailRegex(value),
           })}
         />
         <FormInput
@@ -60,6 +61,7 @@ const SignInForm = () => {
           errorMessage="8자리 이상 비밀번호를 사용하세요."
           {...register("password", {
             required: true,
+            validate: (value) => passwordRegex(value),
           })}
         />
         <AppButton type="submit" isNotValid={!isValid}>

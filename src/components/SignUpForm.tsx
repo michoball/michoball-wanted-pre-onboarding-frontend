@@ -55,6 +55,7 @@ const SignUpForm = () => {
           errorMessage="이메일 형식에 맞지 않습니다."
           {...register("email", {
             required: true,
+            validate: (value) => emailRegex(value),
           })}
         />
         <FormInput
@@ -64,6 +65,7 @@ const SignUpForm = () => {
           errorMessage="8자리 이상 비밀번호를 사용하세요."
           {...register("password", {
             required: true,
+            validate: (value) => passwordRegex(value),
           })}
         />
         <FormInput
