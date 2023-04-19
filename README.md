@@ -167,9 +167,10 @@ export default SignIn;
 ## 개선 사항
 
 - SignIn과 SignUp에 reducer로 구현한 login validator기능을 커스텀 훅으로 빼서 다루는 것이 가독성에 더 좋아보입니다 .
+  => react-form-hook 을 사용하였습니다. 
 
 - 로그인후 SignIn 과 SignUp route에 접근 시 잠깐 접속되었다가 Redirect되는 현재 구현 상태가 UX에 좋지 않아 개선이 필요해보입니다.
-
+  => router.tsx 에 라우팅 관련 관심사를 분리하고 route 접근 제한 관련 로직을 layout 폴더에 따로 정의한 컴포넌트를 넣어 다뤘습니다. 
 - 세부 라우트로 직접 접근시 페이지 에러(404에러)가 나오는 오류가 있습니다.
 
 - error 핸들링을 하는 부분을 개선하면 좋을 것 같습니다.
