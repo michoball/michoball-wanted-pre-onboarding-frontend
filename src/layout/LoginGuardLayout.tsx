@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useRouter } from "hooks/useRouter";
 import { StorageControl } from "@utils/localStorage";
+import Navigation from "@pages/Navigation";
 
 interface LoginGuardLayoutProps {
   children: React.ReactNode;
@@ -12,10 +13,14 @@ const LoginGuardLayout: React.FC<LoginGuardLayoutProps> = ({ children }) => {
   const { currentPath } = useRouter();
 
   if (currentPath === "/") {
-    return <>{children}</>;
+    return <Navigation>{children}</Navigation>;
   }
 
-  return !userToken ? <>{children}</> : <Navigate to="/todo" />;
+  return !userToken ? (
+    <Navigation>{children}</Navigation>
+  ) : (
+    <Navigate to="/todo" />
+  );
 };
 
 export default LoginGuardLayout;

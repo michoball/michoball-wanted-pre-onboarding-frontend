@@ -1,3 +1,4 @@
+import Navigation from "@pages/Navigation";
 import Spinner from "@styles/spinner/Spinner";
 import { StorageControl } from "@utils/localStorage";
 import { useRouter } from "hooks/useRouter";
@@ -29,7 +30,11 @@ const TodoGuardLayout: React.FC<TodoGuardLayoutProps> = ({ children }) => {
 
   if (userProfile === null) return <Spinner />;
 
-  return userProfile ? <>{children}</> : <Navigate to="/signin" />;
+  return userProfile ? (
+    <Navigation>{children}</Navigation>
+  ) : (
+    <Navigate to="/signin" />
+  );
 };
 
 export default TodoGuardLayout;
