@@ -6,7 +6,6 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import TodoGuardLayout from "layout/TodoGuardLayout";
 import LoginGuardLayout from "layout/LoginGuardLayout";
-import Navigation from "@pages/Navigation";
 
 export interface RouterBase {
   id: number;
@@ -16,7 +15,7 @@ export interface RouterBase {
   withAuth?: boolean;
 }
 
-const routerData: RouterBase[] = [
+export const routerData: RouterBase[] = [
   {
     id: 0,
     path: "/",
@@ -52,22 +51,12 @@ export const routers = createBrowserRouter(
     if (router.withAuth) {
       return {
         path: router.path,
-        element: (
-          <TodoGuardLayout>
-            <Navigation sidebarContent={routerData}>
-              {router.element}
-            </Navigation>
-          </TodoGuardLayout>
-        ),
+        element: <TodoGuardLayout>{router.element}</TodoGuardLayout>,
       };
     }
     return {
       path: router.path,
-      element: (
-        <LoginGuardLayout>
-          <Navigation sidebarContent={routerData}>{router.element}</Navigation>
-        </LoginGuardLayout>
-      ),
+      element: <LoginGuardLayout>{router.element}</LoginGuardLayout>,
     };
   })
 );
